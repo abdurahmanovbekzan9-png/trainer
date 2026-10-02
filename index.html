@@ -1,176 +1,163 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<title>Word Order Trainer</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Order Trainer</title>
 <style>
-:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
---bg:#f6f7fb;--card:#fff;--text:#1f2433;--muted:#8a90a5;--accent:#5b6cff;--ok:#2fb36d;--bad:#e5484d;--slot:#e9ecff}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171923;--card:#242838;--text:#eef0f8;--muted:#8d93aa;--accent:#7b89ff;--slot:#2b3050}}
-:root[data-theme="dark"]{--bg:#171923;--card:#242838;--text:#eef0f8;--muted:#8d93aa;--accent:#7b89ff;--slot:#2b3050}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,"Segoe UI",Roboto,sans-serif;padding:16px;max-width:560px;margin:0 auto}
-h1{font-size:18px;margin:0 0 12px}
-.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
-.tab{border:0;background:var(--card);color:var(--text);padding:8px 12px;border-radius:20px;font-size:13px;cursor:pointer}
-.tab.on{background:var(--accent);color:#fff}
-.formula{font-size:13px;color:var(--muted);margin-bottom:14px}
-.ru{font-size:17px;font-weight:600;margin:10px 0 14px}
-.slots,.pool{display:flex;flex-wrap:wrap;gap:10px}
-.slot{min-width:100px;min-height:52px;padding:8px 14px;border-radius:26px;background:var(--slot);border:2px dashed var(--accent);display:flex;align-items:center;justify-content:center;text-align:center;font-size:15px;cursor:pointer}
-.slot .hint{opacity:.45;font-size:13px}
-.slot.full{border-style:solid;background:var(--card)}
-.slot.ok{border-color:var(--ok);background:rgba(47,179,109,.15)}
-.slot.bad{border-color:var(--bad);background:rgba(229,72,77,.15)}
-.pool{margin:26px 0;padding-top:18px;border-top:1px solid var(--slot);min-height:56px}
-.chip{background:var(--card);border:0;border-radius:22px;padding:11px 16px;font-size:16px;color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.15);cursor:pointer}
-.row{display:flex;gap:10px}
-.btn{flex:1;border:0;border-radius:14px;padding:14px;font-size:16px;font-weight:600;cursor:pointer;background:var(--accent);color:#fff}
-.btn.sec{background:var(--card);color:var(--text)}
-#msg{margin-top:14px;font-weight:600;min-height:22px}
+:root{--bg:#f5f1eb;--card:#fffdf9;--ink:#282522;--muted:#817970;--line:#e4ddd4;--accent:#6b5b4d;--ok:#4f8a68;--bad:#b85c5c;--shadow:0 12px 35px rgba(50,40,30,.08)}
+*{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--ink)}
+button{font:inherit;cursor:pointer}.app{min-height:100vh}.top{height:72px;background:rgba(255,253,249,.92);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 5%;position:sticky;top:0;z-index:5}.brand{font-weight:800;letter-spacing:-.5px}.brand span{color:var(--accent)}.stats{font-size:14px;color:var(--muted)}.screen{max-width:1100px;margin:0 auto;padding:45px 24px 70px}.hidden{display:none!important}
+h1{font-size:42px;line-height:1.05;margin:0 0 12px;letter-spacing:-1.5px}h2{margin:0 0 10px;font-size:28px}p{color:var(--muted);line-height:1.55}.sub{max-width:650px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px}.choice{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;text-align:left;box-shadow:var(--shadow);transition:.15s}.choice:hover{transform:translateY(-2px)}.choice.selected{border:2px solid var(--accent);padding:21px;background:#fbf7f0}.choice b{display:block;font-size:18px;margin-bottom:7px}.choice small{color:var(--muted)}.icon{font-size:28px;margin-bottom:15px}
+.actions{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap}.primary,.secondary{border-radius:13px;padding:13px 20px;border:1px solid var(--accent)}.primary{background:var(--accent);color:white}.secondary{background:transparent;color:var(--accent)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:28px}.progress{height:7px;background:#e8e0d7;border-radius:10px;overflow:hidden;margin-bottom:24px}.progress>div{height:100%;background:var(--accent);transition:.3s}.meta{display:flex;justify-content:space-between;color:var(--muted);font-size:14px;margin-bottom:16px}
+.structure{display:flex;gap:10px;flex-wrap:wrap;margin:24px 0}.slot{min-width:125px;min-height:76px;border:2px dashed #cfc5bb;border-radius:15px;background:#faf7f2;padding:10px;text-align:center;display:flex;flex-direction:column;justify-content:center;transition:.15s}.slot.over{border-color:var(--accent);background:#f1ebe3}.slot.filled{border-style:solid}.slot-label{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#9b9188;margin-bottom:5px}.slot-word{font-weight:700}.wordbank{display:flex;flex-wrap:wrap;gap:10px;padding:18px;background:#f1ece5;border-radius:17px;min-height:74px}.word{background:white;border:1px solid #ddd3c8;border-radius:12px;padding:12px 15px;box-shadow:0 4px 12px rgba(40,30,20,.06);user-select:none;touch-action:none}.word.dragging{opacity:.35}.word.used{opacity:.25;pointer-events:none}.feedback{margin-top:18px;padding:15px;border-radius:13px;display:none}.feedback.ok{display:block;background:#eaf4ed;color:#326247}.feedback.bad{display:block;background:#faecec;color:#8f4040}
+.explain{margin-top:18px;border-top:1px solid var(--line);padding-top:18px}.explain-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.tag{background:#f5efe8;border-radius:10px;padding:10px;text-align:center;font-size:12px}.tag b{display:block;font-size:14px;margin-bottom:4px}.results{text-align:center}.score{font-size:64px;font-weight:800;margin:10px}.mistakes{text-align:left;margin-top:28px}.mistake{padding:12px 0;border-bottom:1px solid var(--line)}@media(max-width:750px){.grid{grid-template-columns:1fr}.explain-grid{grid-template-columns:repeat(2,1fr)}h1{font-size:34px}.structure{display:grid;grid-template-columns:1fr 1fr}.slot{min-width:0}.top{padding:0 20px}}
 </style>
 </head>
 <body>
-<h1>Word Order Trainer</h1>
-<div class="tabs" id="tabs"></div>
-<div class="formula" id="formula"></div>
-<div class="ru" id="ru"></div>
-<div class="slots" id="slots"></div>
-<div class="pool" id="pool"></div>
-<div class="row">
-  <button class="btn sec" id="reset">Сначала</button>
-  <button class="btn" id="check">Проверить</button>
-  <button class="btn sec" id="next">Дальше</button>
+<div class="app">
+<header class="top"><div class="brand">English <span>Order</span> Trainer</div><div class="stats" id="headerStats">0 correct · 0 sessions</div></header>
+
+<main>
+<section id="home" class="screen">
+<h1>Build English sentences<br>with your hands.</h1>
+<p class="sub">A visual trainer for students who know the words but still confuse their order — especially questions, negatives, place and time.</p>
+<div class="grid" id="tenseGrid"></div>
+<div class="actions"><button class="primary" onclick="goStep(2)">Continue</button></div>
+</section>
+
+<section id="settings" class="screen hidden">
+<h2>Choose sentence type</h2><p>Practice one form or mix everything.</p>
+<div class="grid" id="typeGrid"></div>
+<h2 style="margin-top:42px">Difficulty</h2>
+<div class="grid" id="diffGrid"></div>
+<div class="actions"><button class="secondary" onclick="show('home')">Back</button><button class="primary" onclick="startGame()">Start training →</button></div>
+</section>
+
+<section id="game" class="screen hidden">
+<div class="panel">
+<div class="progress"><div id="bar"></div></div>
+<div class="meta"><span id="questionNo"></span><span id="scoreNow"></span></div>
+<h2 id="prompt"></h2><p id="hint"></p>
+<div class="structure" id="slots"></div>
+<h3>Words</h3><div class="wordbank" id="wordbank"></div>
+<div class="feedback" id="feedback"></div>
+<div class="actions"><button class="secondary" onclick="resetCurrent()">Reset</button><button class="primary" id="checkBtn" onclick="checkAnswer()">Check answer</button></div>
+<div class="explain hidden" id="explain"></div>
 </div>
-<div id="msg"></div>
+</section>
+
+<section id="results" class="screen hidden">
+<div class="panel results"><p>SESSION COMPLETE</p><h1>Your result</h1><div class="score" id="finalScore">0/10</div><p id="finalText"></p><div class="actions" style="justify-content:center"><button class="primary" onclick="startGame()">Try again</button><button class="secondary" onclick="show('home')">Home</button></div><div class="mistakes" id="mistakes"></div></div>
+</section>
+</main>
+</div>
 
 <script>
-/* === ВСЕ ПРЕДЛОЖЕНИЯ ЗДЕСЬ. Формат: ["Подпись слота","слово"] === */
-let TENSES = {
-  "Present Simple": {
-    formula: "Подлежащее + V (he/she/it: V+s) + объект + время",
-    verbHint: "Глагол (V / V+s)",
-    items: [
-      {ru:"Он читает книгу каждый день.", s:[["Кто","He"],["Глагол","reads"],["Объект","a book"],["Время","every day"]]},
-      {ru:"Мы играем в футбол по субботам.", s:[["Кто","We"],["Глагол","play"],["Объект","football"],["Время","on Saturdays"]]},
-      {ru:"Она пьёт чай по утрам.", s:[["Кто","She"],["Глагол","drinks"],["Объект","tea"],["Время","in the morning"]]}
-    ]},
-  "Past Simple": {
-    formula: "Подлежащее + V2 (прошедшая форма) + объект + время",
-    verbHint: "Глагол (V2)",
-    items: [
-      {ru:"Она посмотрела фильм вчера.", s:[["Кто","She"],["Глагол","watched"],["Объект","a film"],["Время","yesterday"]]},
-      {ru:"Они купили машину в прошлом году.", s:[["Кто","They"],["Глагол","bought"],["Объект","a car"],["Время","last year"]]},
-      {ru:"Я написал письмо два дня назад.", s:[["Кто","I"],["Глагол","wrote"],["Объект","a letter"],["Время","two days ago"]]}
-    ]},
-  "Present Continuous": {
-    formula: "Подлежащее + am/is/are + V-ing + объект + время",
-    verbHint: "Глагол (be + V-ing)",
-    items: [
-      {ru:"Они сейчас едят пиццу.", s:[["Кто","They"],["Глагол","are eating"],["Объект","pizza"],["Время","now"]]},
-      {ru:"Он сейчас пишет письмо.", s:[["Кто","He"],["Глагол","is writing"],["Объект","a letter"],["Время","right now"]]},
-      {ru:"Я сейчас слушаю музыку.", s:[["Кто","I"],["Глагол","am listening to"],["Объект","music"],["Время","at the moment"]]}
-    ]}
-};
+const DB = [
+{id:1,tense:"present",type:"affirmative",difficulty:1,words:["I","work","at home","every day"],labels:["Subject","Verb","Place","Time"],hint:"Who → action → where → when",translation:"Я работаю дома каждый день."},
+{id:2,tense:"present",type:"affirmative",difficulty:1,words:["She","studies","English","at night"],labels:["Subject","Verb","Object","Time"],hint:"Subject → verb → object → time",translation:"Она изучает английский ночью."},
+{id:3,tense:"present",type:"affirmative",difficulty:1,words:["They","play","football","on Sundays"],labels:["Subject","Verb","Object","Time"],hint:"Subject → verb → object → time",translation:"Они играют в футбол по воскресеньям."},
+{id:4,tense:"present",type:"negative",difficulty:1,words:["I","do not","drink","coffee","in the morning"],labels:["Subject","Auxiliary","Verb","Object","Time"],hint:"Subject → do not → verb",translation:"Я не пью кофе утром."},
+{id:5,tense:"present",type:"negative",difficulty:1,words:["He","does not","work","at night"],labels:["Subject","Auxiliary","Verb","Time"],hint:"With he/she/it use does not + base verb",translation:"Он не работает ночью."},
+{id:6,tense:"present",type:"question",difficulty:1,words:["Do","you","work","in Tashkent"],labels:["Auxiliary","Subject","Verb","Place"],hint:"Do → subject → verb → place",translation:"Ты работаешь в Ташкенте?"},
+{id:7,tense:"present",type:"question",difficulty:1,words:["Does","she","live","in London"],labels:["Auxiliary","Subject","Verb","Place"],hint:"Does → subject → base verb → place",translation:"Она живёт в Лондоне?"},
+{id:8,tense:"present",type:"question",difficulty:2,words:["Do","they","go","to the gym","after work"],labels:["Auxiliary","Subject","Verb","Place","Time"],hint:"Question: Do → subject → verb → place → time",translation:"Они ходят в спортзал после работы?"},
+{id:9,tense:"continuous",type:"affirmative",difficulty:1,words:["I","am","working","at home","now"],labels:["Subject","Be","Verb-ing","Place","Time"],hint:"Subject → am/is/are → verb-ing",translation:"Я сейчас работаю дома."},
+{id:10,tense:"continuous",type:"question",difficulty:2,words:["Are","you","waiting","at the airport"],labels:["Be","Subject","Verb-ing","Place"],hint:"Am/Is/Are → subject → verb-ing",translation:"Ты ждёшь в аэропорту?"},
+{id:11,tense:"continuous",type:"negative",difficulty:2,words:["She","is not","working","today"],labels:["Subject","Be not","Verb-ing","Time"],hint:"Subject → is not → verb-ing",translation:"Она сегодня не работает."},
+{id:12,tense:"past",type:"affirmative",difficulty:1,words:["I","visited","my friend","yesterday"],labels:["Subject","Past verb","Object","Time"],hint:"Subject → past verb → object → time",translation:"Я навестил друга вчера."},
+{id:13,tense:"past",type:"question",difficulty:2,words:["Did","you","visit","your friend","yesterday"],labels:["Auxiliary","Subject","Base verb","Object","Time"],hint:"Did → subject → base verb",translation:"Ты навещал друга вчера?"},
+{id:14,tense:"past",type:"negative",difficulty:2,words:["We","did not","go","to the restaurant","last night"],labels:["Subject","Auxiliary","Base verb","Place","Time"],hint:"Did not + base verb",translation:"Мы не ходили в ресторан прошлой ночью."},
+{id:15,tense:"past",type:"affirmative",difficulty:2,words:["She","bought","a new phone","at the mall","last week"],labels:["Subject","Past verb","Object","Place","Time"],hint:"Subject → past verb → object → place → time",translation:"Она купила новый телефон в торговом центре на прошлой неделе."},
+{id:16,tense:"be",type:"affirmative",difficulty:1,words:["I","am","at work","now"],labels:["Subject","Be","Place","Time"],hint:"Subject → am/is/are → place → time",translation:"Я сейчас на работе."},
+{id:17,tense:"be",type:"question",difficulty:1,words:["Are","you","at home","now"],labels:["Be","Subject","Place","Time"],hint:"Be → subject → place → time",translation:"Ты сейчас дома?"},
+{id:18,tense:"be",type:"negative",difficulty:1,words:["They","are not","at the office","today"],labels:["Subject","Be not","Place","Time"],hint:"Subject → are not → place → time",translation:"Их сегодня нет в офисе."}
+];
 
-let tense = Object.keys(TENSES)[0], idx = 0, cards = [], placed = [], checked = false;
-const $ = id => document.getElementById(id);
+const TENSES=[
+["all","🔄","All tenses","Mixed practice"],
+["present","🟢","Present Simple","do / does"],
+["continuous","🔵","Present Continuous","am / is / are + ing"],
+["past","🟠","Past Simple","did / past verb"],
+["be","🟣","To be","am / is / are"]
+];
+const TYPES=[["all","🔄","All forms","Statements + questions + negatives"],["affirmative","✅","Affirmative","I work..."],["question","❓","Question","Do you work...?"],["negative","❌","Negative","I do not work..."]];
+const DIFF=[["1","🌱","Guided","Clear structure + familiar sentences"],["2","🔥","Challenge","Longer sentences + fewer clues"]];
 
-function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+let state={tense:"all",type:"all",difficulty:"1",questions:[],index:0,score:0,placed:[],mistakes:[]};
 
-function load(){
-  const T = TENSES[tense], it = T.items[idx];
-  cards = shuffle(it.s.map((x,i)=>({id:i,w:x[1]})));
-  placed = it.s.map(()=>null);
-  checked = false;
-  $("ru").textContent = it.ru;
-  $("formula").textContent = T.formula;
-  $("msg").textContent = "";
-  render();
+function show(id){document.querySelectorAll(".screen").forEach(x=>x.classList.add("hidden"));document.getElementById(id).classList.remove("hidden")}
+function goStep(n){if(n===2){renderSettings();show("settings")}}
+function cards(data,selected,cb){return data.map(x=>`<button class="choice ${x[0]===selected?"selected":""}" onclick="${cb}('${x[0]}')"><div class="icon">${x[1]}</div><b>${x[2]}</b><small>${x[3]}</small></button>`).join("")}
+function renderHome(){document.getElementById("tenseGrid").innerHTML=cards(TENSES,state.tense,"pickTense")}
+function pickTense(x){state.tense=x;renderHome()}
+function renderSettings(){document.getElementById("typeGrid").innerHTML=cards(TYPES,state.type,"pickType");document.getElementById("diffGrid").innerHTML=cards(DIFF,state.difficulty,"pickDiff")}
+function pickType(x){state.type=x;renderSettings()}
+function pickDiff(x){state.difficulty=x;renderSettings()}
+
+function startGame(){
+ let q=DB.filter(x=>(state.tense==="all"||x.tense===state.tense)&&(state.type==="all"||x.type===state.type)&&(state.difficulty==="1"||x.difficulty<=2));
+ q=q.sort(()=>Math.random()-.5).slice(0,10);
+ if(!q.length){alert("No questions match this selection.");return}
+ state.questions=q;state.index=0;state.score=0;state.placed=[];state.mistakes=[];show("game");renderQuestion()
 }
-
-function render(){
-  const T = TENSES[tense], it = T.items[idx];
-  $("tabs").innerHTML = "";
-  Object.keys(TENSES).forEach(k=>{
-    const b = document.createElement("button");
-    b.className = "tab" + (k===tense?" on":""); b.textContent = k;
-    b.onclick = ()=>{tense=k; idx=0; load()};
-    $("tabs").appendChild(b);
-  });
-  $("slots").innerHTML = "";
-  it.s.forEach((x,i)=>{
-    const d = document.createElement("div");
-    const cid = placed[i];
-    d.className = "slot" + (cid!==null?" full":"");
-    if(checked && cid!==null) d.classList.add(cards.find(c=>c.id===cid).w===x[1] ? "ok":"bad");
-    const label = x[0]==="Глагол" ? T.verbHint : x[0];
-    d.innerHTML = cid!==null ? cards.find(c=>c.id===cid).w : '<span class="hint">['+label+']</span>';
-    d.onclick = ()=>{ if(cid!==null){placed[i]=null; checked=false; $("msg").textContent=""; render()} };
-    $("slots").appendChild(d);
-  });
-  $("pool").innerHTML = "";
-  cards.filter(c=>!placed.includes(c.id)).forEach(c=>{
-    const b = document.createElement("button");
-    b.className = "chip"; b.textContent = c.w;
-    b.onclick = ()=>{ const e = placed.indexOf(null); if(e>-1){placed[e]=c.id; checked=false; render()} };
-    $("pool").appendChild(b);
-  });
+function renderQuestion(){
+ const q=state.questions[state.index];
+ state.placed=Array(q.words.length).fill(null);
+ document.getElementById("questionNo").textContent=`Question ${state.index+1} of ${state.questions.length}`;
+ document.getElementById("scoreNow").textContent=`${state.score} correct`;
+ document.getElementById("bar").style.width=((state.index)/state.questions.length*100)+"%";
+ document.getElementById("prompt").textContent="Build the sentence";
+ document.getElementById("hint").textContent=q.hint;
+ document.getElementById("feedback").className="feedback";
+ document.getElementById("feedback").textContent="";
+ document.getElementById("explain").classList.add("hidden");
+ document.getElementById("checkBtn").textContent="Check answer";
+ document.getElementById("checkBtn").disabled=false;
+ const slots=document.getElementById("slots");slots.innerHTML="";
+ q.labels.forEach((lab,i)=>{let s=document.createElement("div");s.className="slot";s.dataset.i=i;s.innerHTML=`<div class="slot-label">${lab}</div><div class="slot-word"></div>`;addDrop(s);slots.appendChild(s)});
+ const bank=document.getElementById("wordbank");bank.innerHTML="";
+ shuffle(q.words).forEach((word,idx)=>{let b=document.createElement("div");b.className="word";b.draggable=true;b.textContent=word;b.dataset.word=word;b.dataset.id=idx;b.addEventListener("dragstart",e=>{e.dataTransfer.setData("text/plain",word);b.classList.add("dragging")});b.addEventListener("dragend",()=>b.classList.remove("dragging"));b.addEventListener("click",()=>placeWord(word));bank.appendChild(b)});
 }
-
-$("check").onclick = ()=>{
-  const it = TENSES[tense].items[idx];
-  if(placed.includes(null)){ $("msg").textContent = "Сначала заполните все облачка"; return; }
-  checked = true; render();
-  const ok = it.s.every((x,i)=>cards.find(c=>c.id===placed[i]).w===x[1]);
-  $("msg").textContent = ok ? "Верно! 🎉" : "Есть ошибки — нажмите на красное облачко и поправьте";
-  $("msg").style.color = ok ? "var(--ok)" : "var(--bad)";
-};
-$("reset").onclick = load;
-$("next").onclick = ()=>{ idx = (idx+1) % TENSES[tense].items.length; load(); };
-
-/* === ПОДКЛЮЧЕНИЕ К GOOGLE ТАБЛИЦЕ === */
-const SHEET_ID = "18hRynBav9ZPhf89rDeHemR-TN51pzQ_owgAXA7pCR6o";
-const url = n => "https://docs.google.com/spreadsheets/d/"+SHEET_ID+"/gviz/tq?tqx=out:csv&sheet="+n;
-
-function parseCSV(t){
-  const rows=[]; let r=[], c="", q=false;
-  for(let i=0;i<t.length;i++){
-    const ch=t[i];
-    if(q){ if(ch==='"'){ if(t[i+1]==='"'){c+='"';i++} else q=false } else c+=ch }
-    else if(ch==='"') q=true;
-    else if(ch===','){ r.push(c); c="" }
-    else if(ch==='\n'){ r.push(c); rows.push(r); r=[]; c="" }
-    else if(ch!=='\r') c+=ch;
-  }
-  if(c!==""||r.length){ r.push(c); rows.push(r) }
-  return rows;
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function addDrop(el){el.addEventListener("dragover",e=>{e.preventDefault();el.classList.add("over")});el.addEventListener("dragleave",()=>el.classList.remove("over"));el.addEventListener("drop",e=>{e.preventDefault();el.classList.remove("over");placeWord(e.dataTransfer.getData("text/plain"),+el.dataset.i)})}
+function placeWord(word,idx=null){
+ let q=state.questions[state.index];
+ let sourceIndex=q.words.findIndex(w=>w===word && !state.placed.includes(w)); if(sourceIndex<0)return;
+ if(idx===null){idx=state.placed.findIndex(x=>x===null);if(idx<0)return}
+ if(state.placed[idx]){return}
+ state.placed[idx]=word;renderPlaced()
 }
-
-async function loadSheet(){
-  try{
-    const [a,b] = await Promise.all([fetch(url("Tenses")).then(r=>r.text()), fetch(url("Sentences")).then(r=>r.text())]);
-    const T = {};
-    parseCSV(a).slice(1).forEach(r=>{ const k=(r[0]||"").trim(); if(k) T[k]={formula:r[1]||"",verbHint:r[2]||"Глагол",items:[]} });
-    parseCSV(b).slice(1).forEach(r=>{
-      const k=(r[0]||"").trim(); if(!k||!r[1]) return;
-      if(!T[k]) T[k]={formula:"",verbHint:"Глагол",items:[]};
-      const s=[];
-      for(let i=2;i+1<r.length;i+=2){ const w=(r[i+1]||"").trim(); if(w) s.push([(r[i]||"").trim(),w]) }
-      if(s.length) T[k].items.push({ru:r[1].trim(),s});
-    });
-    Object.keys(T).forEach(k=>{ if(!T[k].items.length) delete T[k] });
-    if(!Object.keys(T).length) throw new Error("empty");
-    TENSES = T; tense = Object.keys(T)[0]; idx = 0;
-  }catch(e){
-    console.warn("Таблица недоступна, используются встроенные примеры", e);
-  }
-  load();
+function renderPlaced(){
+ const slots=[...document.querySelectorAll(".slot")];slots.forEach((s,i)=>{s.querySelector(".slot-word").textContent=state.placed[i]||"";s.classList.toggle("filled",!!state.placed[i])});
+ [...document.querySelectorAll(".word")].forEach(w=>w.classList.toggle("used",state.placed.includes(w.dataset.word)));
 }
-$("msg").textContent = "Загружаю предложения…";
-loadSheet();
+function resetCurrent(){state.placed=Array(state.questions[state.index].words.length).fill(null);renderPlaced()}
+function checkAnswer(){
+ if(state.placed.includes(null)){showFeedback("Place all words before checking.","bad");return}
+ const q=state.questions[state.index],correct=q.words.every((w,i)=>w===state.placed[i]);
+ if(correct){state.score++;showFeedback("✓ Correct! Great job.","ok")}else{showFeedback("Not quite. Look at the structure and try again.","bad");state.mistakes.push({q:q.words.join(" "),a:state.placed.join(" ")});}
+ showExplanation(q);
+ document.getElementById("checkBtn").textContent=state.index===state.questions.length-1?"See results →":"Next →";
+ document.getElementById("checkBtn").onclick=nextQuestion;
+}
+function showFeedback(t,c){const f=document.getElementById("feedback");f.textContent=t;f.className="feedback "+c}
+function showExplanation(q){
+ const ex=document.getElementById("explain");ex.classList.remove("hidden");
+ ex.innerHTML=`<b>${q.translation}</b><div class="explain-grid" style="margin-top:14px">${q.words.map((w,i)=>`<div class="tag"><b>${q.labels[i]}</b>${w}</div>`).join("")}</div>`;
+}
+function nextQuestion(){if(state.index<state.questions.length-1){state.index++;renderQuestion()}else{finish()}}
+function finish(){
+ document.getElementById("finalScore").textContent=`${state.score}/${state.questions.length}`;
+ const pct=Math.round(state.score/state.questions.length*100);
+ document.getElementById("finalText").textContent=pct>=90?"Excellent order control!":pct>=70?"Good progress — keep training questions and word order.":"Keep practicing. Focus on the visual structure before memorising.";
+ document.getElementById("mistakes").innerHTML=state.mistakes.length?`<h3>Review your mistakes</h3>`+state.mistakes.map(m=>`<div class="mistake"><b>Correct:</b> ${m.q}<br><span style="color:var(--bad)"><b>Your order:</b> ${m.a}</span></div>`).join(""):"<h3>🎉 No mistakes this session.</h3>";
+ document.getElementById("headerStats").textContent=`${state.score} correct · session complete`;show("results");
+}
+renderHome();
 </script>
 </body>
 </html>
