@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>English Trainer</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{--bg:#F7F8F5;--card:#fff;--p:#6B8F71;--pd:#52705A;--t:#27302A;--s:#7A827C;--ok:#79A88A;--bad:#D98282;--ac:#D9B86C;--line:#E4E8E2}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--t);font-family:-apple-system,"Segoe UI",Roboto,sans-serif}
+#app{max-width:520px;margin:0 auto;min-height:100vh;padding:calc(env(safe-area-inset-top,0px) + 16px) 16px calc(env(safe-area-inset-bottom,0px) + 90px)}
+h1{font-size:24px;margin:4px 0 14px}h2{font-size:19px;margin:20px 0 10px}p{color:var(--s);margin:4px 0}
+.pills{display:flex;gap:8px;margin:12px 0 18px}.pill{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:7px 12px;font-weight:700;font-size:14px}
+.card{background:var(--card);border:2px solid var(--line);border-bottom-width:4px;border-radius:18px;padding:16px;margin-bottom:12px;display:flex;gap:14px;align-items:center;cursor:pointer;width:100%;text-align:left;color:var(--t);font:inherit}
+.card .ic{font-size:30px;width:52px;height:52px;border-radius:14px;background:#EAF0EA;display:flex;align-items:center;justify-content:center}
+.card b{display:block;font-size:17px}.card.off{opacity:.55;cursor:default}
+.btn{display:block;width:100%;border:0;border-radius:16px;background:var(--p);color:#fff;font-weight:800;font-size:16px;letter-spacing:.5px;text-transform:uppercase;padding:15px;border-bottom:4px solid var(--pd);cursor:pointer}
+.btn:active{transform:translateY(2px);border-bottom-width:2px}.btn.sec{background:var(--card);color:var(--pd);border:2px solid var(--line);border-bottom-width:4px}
+.btn:disabled{background:#CDD3CD;border-bottom-color:#B7BFB7;cursor:default}
+.chips{display:flex;flex-wrap:wrap;gap:8px}.chip{border:2px solid var(--line);border-bottom-width:4px;background:var(--card);border-radius:14px;padding:9px 13px;font:inherit;font-weight:600;color:var(--t);cursor:pointer}
+.chip.on{border-color:var(--p);background:#EAF0EA;color:var(--pd)}
+.nav{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:2px solid var(--line);display:flex;justify-content:center;gap:10px;padding:8px 16px calc(env(safe-area-inset-bottom,0px) + 8px)}
+.nav button{flex:1;max-width:200px;border:0;background:none;font:inherit;font-weight:700;color:var(--s);padding:8px;border-radius:12px;cursor:pointer}.nav button.on{background:#EAF0EA;color:var(--pd)}
+.top{display:flex;align-items:center;gap:12px;margin-bottom:22px}.x{border:0;background:none;font-size:24px;color:var(--s);cursor:pointer}
+.bar{flex:1;height:14px;background:var(--line);border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:var(--p);border-radius:9px;transition:width .3s}
+.ru{font-size:20px;font-weight:700;margin:6px 0 4px}
+.slots{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.slot{min-width:92px;min-height:58px;padding:8px 14px;border:2px dashed #B7C4B8;border-radius:22px;background:#EFF3EE;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer;font-weight:600}
+.slot small{color:#9AA59B;font-weight:500;font-size:12px}.slot.full{border:2px solid var(--line);border-bottom-width:4px;background:var(--card)}
+.slot.ok{border-color:var(--ok);background:#E7F1EA}.slot.bad{border-color:var(--bad);background:#FAEAEA}
+.pool{display:flex;flex-wrap:wrap;gap:10px;padding-top:20px;border-top:2px solid var(--line);min-height:70px}
+.sheet{position:fixed;left:0;right:0;bottom:0;padding:18px 16px calc(env(safe-area-inset-bottom,0px) + 16px);border-radius:20px 20px 0 0}
+.sheet.ok{background:#E3EFE7}.sheet.bad{background:#F8E4E4}.sheet b{display:block;font-size:18px;margin-bottom:4px}.sheet.ok b{color:var(--pd)}.sheet.bad b{color:#B35A5A}
+.foot{position:fixed;left:0;right:0;bottom:0;padding:14px 16px calc(env(safe-area-inset-bottom,0px) + 14px);background:var(--bg);border-top:2px solid var(--line)}
+.inner{max-width:520px;margin:0 auto}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:14px}.stat b{font-size:24px;display:block}
+.av{width:80px;height:80px;border-radius:50%;background:var(--ac);color:#fff;font-size:34px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:6px auto 10px}
+.c{text-align:center}.big{font-size:56px;font-weight:800;color:var(--pd);margin:10px 0}
+</style></head><body><div id="app"></div><div id="ov"></div>
+<script>
+const SHEET_ID="1o_NBtHhbU1r1NmKpcDRkcYRNEfMRQmQyqHGPIWt-GSU";
+const API_URL=""; /* ссылка Google Apps Script для записи результатов (появится на следующем шаге) */
+const tg=window.Telegram&&Telegram.WebApp; if(tg){try{tg.ready();tg.expand()}catch(e){}}
+const U=(tg&&tg.initDataUnsafe&&tg.initDataUnsafe.user)||{id:"guest",first_name:"Гость"};
+const $=id=>document.getElementById(id), esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const TYPES={affirmative:"Утверждение",negative:"Отрицание",question:"Вопрос"}, LV={1:"Лёгкий",2:"Средний",3:"Сложный"};
+let P={xp:0,solved:0,correct:0,streak:0,last:""};
+try{P=Object.assign(P,JSON.parse(localStorage.getItem("p_"+U.id)||"{}"))}catch(e){}
+const saveP=()=>{try{localStorage.setItem("p_"+U.id,JSON.stringify(P))}catch(e){}};
+let DB=[],TN={},F={tense:"all",type:"all",level:"all"},G={},tab="home";
+
+function csv(t){const R=[];let r=[],c="",q=0;for(let i=0;i<t.length;i++){const h=t[i];if(q){if(h=='"'){if(t[i+1]=='"'){c+='"';i++}else q=0}else c+=h}else if(h=='"')q=1;else if(h==","){r.push(c);c=""}else if(h=="\n"){r.push(c);R.push(r);r=[];c=""}else if(h!="\r")c+=h}if(c!==""||r.length){r.push(c);R.push(r)}return R}
+const url=n=>"https://docs.google.com/spreadsheets/d/"+SHEET_ID+"/gviz/tq?tqx=out:csv&sheet="+n;
+async function load(){
+ $("app").innerHTML='<p class="c" style="margin-top:40vh">Загружаю упражнения…</p>';
+ try{
+  const [a,b]=await Promise.all([fetch(url("Tenses")).then(r=>r.text()),fetch(url("Sentences")).then(r=>r.text())]);
+  csv(a).slice(1).forEach(r=>{if(r[0])TN[r[0].trim()]={n:r[1],i:r[2]||"📘"}});
+  DB=csv(b).slice(1).filter(r=>r[1]&&r[4]).map(r=>{const s=[];for(let i=6;i+1<r.length;i+=2)if((r[i+1]||"").trim())s.push([r[i].trim(),r[i+1].trim()]);return{id:r[0],tense:r[1].trim(),type:r[2].trim(),lvl:+r[3]||1,ru:r[4],s}}).filter(x=>x.s.length);
+  if(!DB.length)throw 0;
+  const d=new Date().toDateString();if(P.last!==d){const y=new Date(Date.now()-864e5).toDateString();P.streak=P.last===y?P.streak+0:0;saveP()}
+  view();
+ }catch(e){$("app").innerHTML='<div class="c" style="margin-top:30vh"><h2>Не удалось загрузить</h2><p>Проверьте интернет и доступ к таблице.</p><br><button class="btn" onclick="load()">Повторить</button></div>'}
+}
+function nav(){return '<div class="nav"><button class="'+(tab=="home"?"on":"")+'" onclick="tab=\'home\';view()">📚 Учиться</button><button class="'+(tab=="profile"?"on":"")+'" onclick="tab=\'profile\';view()">👤 Профиль</button></div>'}
+function view(){ $("ov").innerHTML=""; tab=="profile"?profile():home() }
+function home(){
+ $("app").innerHTML='<h1>Привет, '+esc(U.first_name||"друг")+'! 👋</h1><div class="pills"><span class="pill">🔥 '+P.streak+'</span><span class="pill">⭐ '+P.xp+' XP</span></div>'+
+ '<h2 style="margin-top:0">Упражнения</h2>'+
+ '<button class="card" onclick="setup()"><span class="ic">🧩</span><span><b>Word Order</b><p>Собери предложение из облачков</p></span></button>'+
+ '<div class="card off"><span class="ic">📝</span><span><b>Мои слова</b><p>Скоро: свои слова и карточки</p></span></div>'+nav();
+}
+function profile(){
+ const acc=P.solved?Math.round(P.correct/P.solved*100):0,n=(U.first_name||"?")+" "+(U.last_name||"");
+ $("app").innerHTML='<div class="c"><div class="av">'+esc((U.first_name||"?")[0].toUpperCase())+'</div><h1 style="margin:0">'+esc(n.trim())+'</h1><p>'+(U.username?"@"+esc(U.username):"ID "+U.id)+'</p></div><h2>Статистика</h2><div class="grid">'+
+ '<div class="stat"><b>⭐ '+P.xp+'</b><p>Очки XP</p></div><div class="stat"><b>🔥 '+P.streak+'</b><p>Серия дней</p></div><div class="stat"><b>'+P.solved+'</b><p>Решено</p></div><div class="stat"><b>'+acc+'%</b><p>Точность</p></div></div>'+nav();
+}
+const chips=(k,opts)=>'<div class="chips">'+opts.map(o=>'<button class="chip '+(F[k]==o[0]?"on":"")+'" onclick="F.'+k+'=\''+o[0]+'\';setup()">'+o[1]+'</button>').join("")+'</div>';
+function setup(){
+ const tn=[["all","🔄 Все"]].concat(Object.keys(TN).map(k=>[k,TN[k].i+" "+TN[k].n]));
+ $("app").innerHTML='<div class="top"><button class="x" onclick="view()">✕</button><h1 style="margin:0">Word Order</h1></div><h2 style="margin-top:0">Время</h2>'+chips("tense",tn)+
+ '<h2>Тип предложения</h2>'+chips("type",[["all","🔄 Все"]].concat(Object.entries(TYPES)))+'<h2>Сложность</h2>'+chips("level",[["all","🔄 Все"],[1,"🌱 Лёгкий"],[2,"🌿 Средний"],[3,"🌳 Сложный"]])+
+ '<div style="height:90px"></div><div class="foot"><div class="inner"><button class="btn" onclick="start()">Начать</button></div></div>';
+ $("ov").innerHTML="";
+}
+function sh(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a}
+function start(){
+ let q=DB.filter(x=>(F.tense=="all"||x.tense==F.tense)&&(F.type=="all"||x.type==F.type)&&(F.level=="all"||x.lvl==F.level));
+ if(!q.length){alert("Нет предложений под этот выбор");return}
+ G={list:sh(q).slice(0,10),i:0,score:0,bad:[]};q_();
+}
+function q_(){const it=G.list[G.i];G.cards=sh(it.s.map((x,i)=>({id:i,w:x[1]})));G.placed=it.s.map(()=>null);G.chk=false;game()}
+function game(){
+ const it=G.list[G.i],full=!G.placed.includes(null);
+ const sl=it.s.map((x,k)=>{const c=G.placed[k],w=c!==null?G.cards.find(z=>z.id==c).w:null;
+  const st=G.chk?(w==x[1]?" ok":" bad"):"";
+  return '<div class="slot'+(w?" full":"")+st+'" onclick="rm('+k+')">'+(w?esc(w):'<small>'+esc(x[0])+'</small>')+'</div>'}).join("");
+ const pool=G.cards.filter(c=>!G.placed.includes(c.id)).map(c=>'<button class="chip" onclick="put('+c.id+')">'+esc(c.w)+'</button>').join("");
+ $("app").innerHTML='<div class="top"><button class="x" onclick="if(confirm(\'Выйти? Прогресс этой сессии не сохранится.\'))view()">✕</button><div class="bar"><i style="width:'+(G.i/G.list.length*100)+'%"></i></div></div>'+
+ '<p>'+(TN[it.tense]?TN[it.tense].n:it.tense)+' · '+(TYPES[it.type]||it.type)+'</p><div class="ru">'+esc(it.ru)+'</div><p>Собери предложение по-английски</p><div class="slots">'+sl+'</div><div class="pool">'+pool+'</div>'+
+ (G.chk?'':'<div class="foot"><div class="inner"><button class="btn" '+(full?"":"disabled")+' onclick="check()">Проверить</button></div></div>');
+}
+function put(id){if(G.chk)return;const e=G.placed.indexOf(null);if(e>-1){G.placed[e]=id;game()}}
+function rm(k){if(G.chk||G.placed[k]===null)return;G.placed[k]=null;game()}
+function check(){
+ const it=G.list[G.i];G.chk=true;
+ const ok=it.s.every((x,k)=>G.cards.find(z=>z.id==G.placed[k]).w==x[1]);
+ P.solved++;if(ok){G.score++;P.correct++;P.xp+=10}else G.bad.push(it);
+ const d=new Date().toDateString();if(P.last!==d){P.streak++;P.last=d}saveP();
+ send(it,ok);game();
+ const last=G.i==G.list.length-1;
+ $("ov").innerHTML='<div class="sheet '+(ok?"ok":"bad")+'"><div class="inner"><b>'+(ok?"Верно! +10 XP":"Неверно")+'</b>'+(ok?'':'<p style="color:var(--t)">Правильно: <b style="display:inline;font-size:inherit;color:inherit">'+esc(it.s.map(x=>x[1]).join(" "))+'</b></p>')+'<br><button class="btn" style="'+(ok?'':'background:var(--bad);border-bottom-color:#B35A5A')+'" onclick="nx()">'+(last?"Результат":"Дальше")+'</button></div></div>';
+}
+function nx(){$("ov").innerHTML="";if(G.i<G.list.length-1){G.i++;q_()}else done()}
+function done(){
+ const n=G.list.length,pc=Math.round(G.score/n*100);
+ $("app").innerHTML='<div class="c" style="margin-top:8vh"><p>Сессия завершена</p><div class="big">'+G.score+'/'+n+'</div><h2>'+(pc>=90?"Отлично! 🎉":pc>=60?"Хороший результат 👍":"Продолжай тренироваться 💪")+'</h2><p>+'+(G.score*10)+' XP</p></div>'+
+ (G.bad.length?'<h2>Работа над ошибками</h2>'+G.bad.map(x=>'<div class="stat" style="margin-bottom:8px"><b style="font-size:16px">'+esc(x.s.map(y=>y[1]).join(" "))+'</b><p>'+esc(x.ru)+'</p></div>').join(""):'')+
+ '<div style="height:150px"></div><div class="foot"><div class="inner"><button class="btn" onclick="start()">Ещё раз</button><div style="height:8px"></div><button class="btn sec" onclick="view()">На главную</button></div></div>';
+}
+function send(it,ok){
+ if(!API_URL)return;
+ const body={uid:U.id,name:((U.first_name||"")+" "+(U.last_name||"")).trim(),username:U.username||"",sid:it.id,tense:it.tense,type:it.type,lvl:it.lvl,ok:ok?1:0,answer:G.placed.map(c=>G.cards.find(z=>z.id==c).w).join(" ")};
+ try{fetch(API_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:JSON.stringify(body)}).catch(()=>{})}catch(e){}
+}
+load();
+</script></body></html>
